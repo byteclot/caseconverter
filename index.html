@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            flex-flow: column;
+        }
+        .buttons {
+            display: flex;
+            margin: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 5px;
+            background-color: coral;
+        }
+        .title {
+            font-family: Arial;
+            font-size: x-large;
+            margin: 10px;
+            padding: 5px;
+        }
+        #text {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Case Converter</div>
+            <textarea id="text"></textarea>
+            <div class="buttons">
+                <button id="upper-case">Upper Case</button>
+                <button id="lower-case">Lower Case</button>
+                <button id="proper-case">Proper Case</button>
+                <button id="sentence-case">Sentence Case</button>
+                <button id="save-text-file">Save File</button>
+            </div>
+        </div>
+<script>
+    document.getElementById("upper-case").addEventListener("click", function() {
+        let elem = document.getElementById("text");
+        let string = elem.value;
+        elem.value = string.toUpperCase();
+    });
+    document.getElementById("lower-case").addEventListener("click", function() {
+        let elem = document.getElementById("text");
+        let string = elem.value;
+        elem.value = string.toLowerCase();
+    });
+    document.getElementById("proper-case").addEventListener("click", function() {
+        let elem = document.getElementById("text");
+        let string = elem.value;
+        let words = string.toLowerCase().split(" ");
+        for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+        }
+        elem.value = words.join(" ");
+    });
+    document.getElementById("sentence-case").addEventListener("click", function() {
+        let el = document.getElementById("text");
+        let string = el.value;
+        let sentences = string.toLowerCase().match( /[^\.!\?]+[\.!\?]+/g );
+        for (let i = 0; i < sentences.length; i++) {
+            let sentence = sentences[i].trim();
+            sentences[i] = sentence[0].toUpperCase() + sentence.substr(1);
+        }
+        el.value = sentences.join(" ");
+    });
+
+    document.getElementById("save-text-file").addEventListener("click", function() {
+        // Start file download.
+        download("text.txt", document.getElementById("text").value);
+    });
+
+    function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+</script>
+
+</body>
+</html>
